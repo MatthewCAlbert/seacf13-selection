@@ -1,0 +1,43 @@
+$safe-margin: 5%;
+$max-outer-width: 1900px;
+$max-content-width: 1700px;
+$header-height: 60px;
+
+// BS4 Breakpoints (min-width)
+// $breakpoint-xs: 575px; // (max width)
+// $breakpoint-sm: 576px;
+// $breakpoint-md: 768px;
+// $breakpoint-lg: 992px;
+// $breakpoint-xl: 1200px;
+// $breakpoint-2xl: 1400px;
+
+// Tailwind Breakpoints (min-width)
+$breakpoint-min-sm: 640px;
+$breakpoint-min-md: 768px;
+$breakpoint-min-lg: 1024px;
+$breakpoint-min-xl: 1280px;
+$breakpoint-min-2xl: 1536px;
+
+// Tailwind Breakpoints (max-width)
+$breakpoint-max-sm: 639px;
+$breakpoint-max-md: 767px;
+$breakpoint-max-lg: 1023px;
+$breakpoint-max-xl: 1279px;
+$breakpoint-max-2xl: 1535px;
+
+$primary-blue1: #01937c;
+$primary-blue2: #b6c867;
+$secondary-blue1: #ffc074;
+$black: #303030;
+$palewhite: #faf1e6;
+
+@mixin getCurrentHeaderHeight($property) {
+  #{$property}: $header-height;
+}
+
+@mixin getXSafePad($property, $y) {
+  #{$property}: $y 5%;
+  @media screen and (max-width: $breakpoint-max-md) {
+    #{$property}: $y 10%;
+  }
+}

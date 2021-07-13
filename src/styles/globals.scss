@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+@import url("https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"); //switch to tailwind postcss when building
+@import url("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
+@import url("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
+@import url("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
+@import "react-datetime-picker/dist/DateTimePicker.css";
+@import "react-calendar/dist/Calendar.css";
+@import "react-clock/dist/Clock.css";
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto", Roboto, -apple-system, BlinkMacSystemFont, Segoe UI,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@import "./layout.scss";
+@import "./app.scss";

@@ -1,0 +1,39 @@
+@import "_variables.scss";
+
+.btn {
+  @apply font-bold py-2 px-4 rounded;
+}
+.btn-blue {
+  @apply bg-blue-500 text-white;
+}
+.btn-blue:not(.disabled):hover {
+  @apply bg-blue-700;
+}
+
+.btn-red {
+  @apply bg-red-500 text-white;
+}
+.btn-red:not(.disabled):hover {
+  @apply bg-red-700;
+}
+
+.btn-green {
+  @apply bg-green-500 text-white;
+}
+.btn-green:not(.disabled):hover {
+  @apply bg-green-700;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  transition: all 500ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}

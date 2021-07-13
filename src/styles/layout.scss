@@ -1,0 +1,236 @@
+@import "_variables.scss";
+
+.web-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.header {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  @include getCurrentHeaderHeight(height);
+  color: white;
+  background-color: $primary-blue1;
+  transition: 0.2s all;
+  &-inner {
+    max-width: $max-content-width;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 15px;
+    position: relative;
+  }
+  .header-title {
+    font-weight: 400;
+    letter-spacing: 3px;
+  }
+  &-logo {
+    display: block;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    img {
+      object-fit: cover;
+    }
+  }
+  &-nav {
+    height: 100%;
+    ul {
+      height: 100%;
+      margin: 0;
+      list-style-type: none;
+      display: flex;
+      li {
+        display: flex;
+        align-items: center;
+        a {
+          white-space: pre;
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          font-size: 1em;
+          height: 100%;
+          position: relative;
+          font-weight: 700;
+          text-align: center;
+          transition: 0.2s;
+          &:hover {
+            transition: 0.2s;
+            background-color: $primary-blue2;
+          }
+          @media screen and (max-width: $breakpoint-max-md) {
+            padding: 0 15px;
+          }
+        }
+      }
+    }
+  }
+  &-nav-mobile {
+    display: flex;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    background-color: $primary-blue1;
+    color: white;
+    flex-direction: column;
+    transition: 0.2s ease-out;
+    transform: translateY(-20px);
+    .nav-close-wrapper {
+      font-size: 42px;
+      cursor: pointer;
+    }
+    &.active {
+      transition: 0.2s ease-in;
+      display: flex;
+      height: 100vh;
+      transform: translateY(0px);
+    }
+    li {
+      width: 100%;
+      a {
+        display: flex;
+        font-weight: 500;
+        @apply text-2xl;
+        @apply py-3;
+        @apply px-5;
+        &:hover {
+          background-color: $primary-blue2;
+        }
+      }
+    }
+    // @include getCurrentHeaderHeight(top);
+  }
+  .nav-toggle-wrapper {
+    color: white;
+    cursor: pointer;
+    font-size: 32px;
+  }
+}
+
+.main-container {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.footer {
+  width: 100%;
+  min-height: 100px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: $primary-blue1;
+  &-social {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    & > span {
+      padding: 0 18px;
+      a {
+        transition: 0.2s;
+      }
+      a:hover {
+        color: $palewhite;
+      }
+    }
+  }
+  &-attribution {
+    span {
+      font-weight: 700;
+      text-align: center;
+      display: block;
+      &:first-child {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+
+.section {
+  width: 100%;
+  &.section-normalized &-inner {
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    @include getXSafePad(padding, 100px);
+    position: relative;
+    max-width: $max-content-width;
+  }
+  &.section-first {
+    @include getCurrentHeaderHeight(padding-top);
+  }
+}
+
+.btn.btn-normal {
+  a {
+    padding: 10px 25px;
+    height: auto;
+    border-radius: 32px;
+    background-color: $primary-blue1;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: 0.2s;
+    &:hover {
+      background-color: $primary-blue2;
+    }
+  }
+  &.btn-invert {
+    a {
+      color: $primary-blue1;
+      background-color: white;
+      &:hover {
+        background-color: $palewhite;
+      }
+    }
+  }
+}
+
+.fullbg--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  &.dark-overlay {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.bg-blue1 {
+  background-color: $primary-blue1;
+}
+
+.text-black1 {
+  color: $black;
+}
+
+.image-container {
+  display: block;
+  position: relative;
+  & > img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+}
