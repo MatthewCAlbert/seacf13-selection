@@ -58,8 +58,13 @@ yarn install
 npm install -g netlify-cli
 ```
 
+Then, copy .env.example to .env.local, and fill with your own configuration, don't forget to apply to netlify variables using:
+```bash
+netlify env:import .env.local
+```
+
 ## Develop
-Then, run the development server:
+Run the development server (nextjs with functions):
 
 ```bash
 yarn dev:netlify
