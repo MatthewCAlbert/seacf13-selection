@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import jsonwebtoken from 'jsonwebtoken';
-import { PRIV_KEY } from './key';
+import { JWT_EXP, JWT_SECRET } from './key';
 
 /**
  *
@@ -45,16 +45,16 @@ function genPassword(password) {
  */
 function issueJWT(id) {
 
-  const expiresIn = "2h";
+  const expiresIn = JWT_EXP;
 
   const payload = {
     sub: id,
     iat: Date.now(),
   };
 
-  const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, {
+  const signedToken = jsonwebtoken.sign(payload, JWT_SECRET, {
     expiresIn: expiresIn,
-    algorithm: "RS256",
+    // algorithm: "RS256",
   });
 
   return {

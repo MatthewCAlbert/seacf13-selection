@@ -20,7 +20,7 @@ const handler: Handler = async (event, context) => {
   let res2 = await mysql.query(`DELETE FROM doctorappointments WHERE id='${stringEscaper(id)}'`);
   await mysql.end();
 
-  if( res && res.affectedRows > 0 && res2 ){
+  if( res ){
     return errorResponse(200);
   }
 

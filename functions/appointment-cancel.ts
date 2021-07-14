@@ -6,17 +6,21 @@ import { bodyParser, errorResponse, generateInsertStatement, nonSelectQueryRespo
 const handler: Handler = async (event, context) => {
   if( event.httpMethod !== "DELETE" ) return errorResponse(405);
   const body = bodyParser(event);
-  validator(body, ["appointmentId"]);
+  validator(body, ["id"]);
 
-  const {appointmentId} = body;
+  const {id} = body;
 
   const auth = await requireAuth(event);
   if( auth === null ) return errorResponse(401);
-  // if( auth.role !== 2 ) return { statusCode:403 }
 
   const mysql = db;
+  let res;
 
-  let res = await mysql.query(`DELETE FROM appointments WHERE id='${stringEscaper(appointmentId)}'`)
+  if( auth.role !== 1 ){
+    res = await mysql.query(`DELETE FROM appointments WHERE id='${stringEscaper(id)}'`)
+  }else{
+    res = await mysql.query(`DELETE FROM appointments WHERE id='${stringEscaper(id)}' AND userId='${auth.id}'`)
+  }
   await mysql.end();
 
   return nonSelectQueryResponse(res);

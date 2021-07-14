@@ -62,9 +62,9 @@ export function selectResponse(data, message = "Ok"){
 }
 
 export function errorResponse(statusCode=500, message=""){
-  const cmessage = {200: "Ok", 401: "Unauthorized", 403: "Forbidden", 404: "Not Found", 405: "Method not allowed", 500: "Server Error"}
+  const cmessage = {200: "Ok", 400: "Bad Request", 401: "Unauthorized", 403: "Forbidden", 404: "Not Found", 405: "Method not allowed", 500: "Server Error"}
 
-  return { statusCode:500, body: JSON.stringify({
+  return { statusCode, body: JSON.stringify({
     success: statusCode === 200,
     message: message || cmessage[statusCode] || ""
   }) }

@@ -35,11 +35,6 @@ const Header = ({enableHeaderScrollAnimation = true, ...props}) => {
           <ul>
             <li><Link href="/">Home</Link></li>
             {
-              (user && isAdmin()) && <>
-                <li><Link href="/admin">Admin</Link></li>
-              </>
-            }
-            {
               user ? 
                 <>
                   <li><Link href="/appointment"><a>My<br/>Appointment</a></Link></li>
@@ -62,11 +57,6 @@ const Header = ({enableHeaderScrollAnimation = true, ...props}) => {
           </div>
           <ul>
             <li><LinkExit href="/">Home</LinkExit></li>
-            {
-              (user && isAdmin()) && <>
-                <li><LinkExit href="/admin">Admin</LinkExit></li>
-              </>
-            }
             {
               user ? 
                 <>

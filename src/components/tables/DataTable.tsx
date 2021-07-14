@@ -1,8 +1,6 @@
-import Link from 'next/link';
-import { useMemo } from 'react';
 import {useTable} from 'react-table';
 
-const DataTable = ({tableRow = [], tableCol = []}) => {
+const DataTable = ({tableRow = [], tableCol = [], notFoundMessage="No Data Found"}) => {
   const data = tableRow;
 
   const columns = tableCol;
@@ -19,7 +17,8 @@ const DataTable = ({tableRow = [], tableCol = []}) => {
 
   return (
    // apply the table props
-   <table {...getTableProps()} className="min-w-max w-full table-auto">
+   <div className="overflow-x-auto max-w-full">
+   <table {...getTableProps()} className="table-auto w-full">
      <thead>
        {// Loop over the header rows
        headerGroups.map(headerGroup => (
@@ -39,6 +38,7 @@ const DataTable = ({tableRow = [], tableCol = []}) => {
      {/* Apply the table body props */}
      <tbody {...getTableBodyProps()} className="text-gray-600 text-sm font-light">
        {// Loop over the table rows
+       rows.length > 0 ?
        rows.map(row => {
          // Prepare the row for display
          prepareRow(row)
@@ -49,7 +49,7 @@ const DataTable = ({tableRow = [], tableCol = []}) => {
              row.cells.map(cell => {
                // Apply the cell props
                return (
-                 <td {...cell.getCellProps()} className="py-3 px-6 text-left whitespace-nowrap">
+                 <td {...cell.getCellProps()} className="py-3 px-6 text-left min-w-max">
                    {// Render the cell contents
                    cell.render('Cell')}
                  </td>
@@ -57,10 +57,13 @@ const DataTable = ({tableRow = [], tableCol = []}) => {
              })}
            </tr>
          )
-       })}
+       }) : <tr className="border-b border-gray-200 hover:bg-gray-100">
+         <td colSpan={headerGroups[0].headers.length} className="py-3 px-6 text-center min-w-max">{notFoundMessage}</td>
+       </tr>
+      }
      </tbody>
    </table>
- )
+   </div>)
 }
 
 export default DataTable

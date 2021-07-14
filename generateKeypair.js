@@ -20,11 +20,14 @@ function genKeyPair() {
     },
   });
 
-  // Create the public key file
-  fs.writeFileSync(__dirname + "/id_rsa_pub.pem", keyPair.publicKey);
-
-  // Create the private key file
-  fs.writeFileSync(__dirname + "/id_rsa_priv.pem", keyPair.privateKey);
+  if (!fs.existsSync(__dirname + "/id_rsa_pub.pem")) {
+    // Create the public key file
+    fs.writeFileSync(__dirname + "/id_rsa_pub.pem", keyPair.publicKey);
+    // Create the private key file
+    fs.writeFileSync(__dirname + "/id_rsa_priv.pem", keyPair.privateKey);
+  } else {
+    console.log("Key generation failed: file already exist");
+  }
 }
 
 // Generate the keypair

@@ -11,14 +11,11 @@ const handler: Handler = async (event, context) => {
 
   const mysql = db;
 
-  let res = await mysql.query(`SELECT * FROM appointments RIGHT JOIN doctorAppointments ON appointments.appointmentId = doctorAppointments.id WHERE appointments.userId = '${auth.id}'`)
+  let res = await mysql.query(`SELECT *,appointments.id FROM appointments RIGHT JOIN doctorappointments ON appointments.appointmentId = doctorappointments.id WHERE appointments.userId = '${auth.id}'`)
   await mysql.end();
 
   if( res ){
-    if( res.length > 0 ){
-      selectResponse(res);
-    }
-    return errorResponse(404);
+    return selectResponse(res);
   }
 
   return errorResponse(500);

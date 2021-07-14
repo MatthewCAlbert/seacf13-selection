@@ -9,7 +9,15 @@ import { AuthContext } from '../stores/authContext';
 const register = () => {
   const router = useRouter();
   const {user, login} = useContext(AuthContext);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    age: "",
+    password: "",
+    cpassword: "",
+  });
   const [submitted, setSubmitted] = useState(false);
 
   if( user ) router.push("/");

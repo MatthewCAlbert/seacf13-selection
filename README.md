@@ -10,6 +10,7 @@
 - Font Awesome 5
 - React Table
 - React Datetime Picker
+- SweetAlert2
 
 ## Backend Powered Using
 - Typescript

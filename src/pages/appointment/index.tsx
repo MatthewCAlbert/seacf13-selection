@@ -1,31 +1,80 @@
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Layout from '../../components/layouts/Layout';
 import SEO from '../../components/layouts/SEO';
 import DataTable from '../../components/tables/DataTable';
+import { AuthContext } from '../../stores/authContext';
+import { fetch } from '../../utils/fetch';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import moment from 'moment';
+
+const MySwal = withReactContent(Swal);
 
 const myAppointment = () => {
+  const {user, isAdmin} = useContext(AuthContext);
+  const [dataResult, setDataResult] = useState([]);
+
+  async function refreshList(){
+    try{
+      const res = await fetch(user.token).get("/appointment-my");
+      if( res && res.data ){
+        const data = res.data.data;
+        setDataResult(data);
+      }
+    }catch(e){
+    }
+  }
+
+  async function onCancelAppointment(e){
+    const id = e.target.getAttribute('data-id');
+    MySwal.fire({
+      title: <p>Do you want to cancel?</p>,
+      icon: "warning",
+      showConfirmButton: true,
+      showCancelButton: true
+    }).then(async (result)=>{
+      if( result.isConfirmed && id ){
+        try{
+          const res = await fetch(user.token).delete("/appointment-cancel", {
+            data: {
+              id
+            }
+          });
+          if( res && res.data && res.data.success ){
+            MySwal.fire({
+              title: <p>Cancellation Success!</p>,
+              icon: "success"
+            });
+          }
+        }catch(e){
+        }
+        refreshList();
+      }
+    });
+  }
+  
+  useEffect(() => {
+    if( user ) refreshList();
+  }, [user])
+
   
   const data = useMemo(()=>[
-    {
-      id: "iniuuid",
-      datetime: "1970-01-01",
-      doctorName: "Budi Hermawan",
-      description: "Ini deskripsi"
-    }
+    ...dataResult
   ].map((el)=>{
     return {...el,
+    date: moment(el.date).format("LLLL"),
     description: el.description.substr(0,20) + (el.description.length > 20 ? ".." : ""),
     action: <>
-    <Link href=""><button className="btn btn-red"><i className="fas fa-times"></i></button></Link>
+    <button className="btn btn-red" onClick={onCancelAppointment} data-id={el.id}><i className="fas fa-times"></i></button>
     </>
   }
-  }),[]);
+  }),[dataResult]);
 
   const columns = useMemo(() => [
     {
       Header: 'Date & Time',
-      accessor: "datetime",
+      accessor: "date",
     },
     {
       Header: 'Doctor Name',

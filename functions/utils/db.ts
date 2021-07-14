@@ -1,7 +1,11 @@
 import path from "path";
 import serverlessMysql from "serverless-mysql";
 
-require('dotenv').config({path: path.resolve(process.cwd(), '.env.local')});
+try{
+    require('dotenv').config({path: path.resolve(process.cwd(), '.env.local')});
+}catch(e){
+
+}
 
 const dbconfig = ()=>{
   if( process.env.NODE_ENV === "production" )

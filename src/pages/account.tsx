@@ -6,7 +6,7 @@ import { AuthContext } from '../stores/authContext';
 
 export default function account() {
   const {user} = useContext(AuthContext);
-  // if( !user ) return "Unauthorized";
+  if( !user ) return <p>Log in first</p>;
 
   useEffect(() => {
     if( user )

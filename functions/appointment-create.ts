@@ -19,7 +19,7 @@ const handler: Handler = async (event, context) => {
   const mysql = db;
   const data = {id: nanoid(), doctorName, description, maxRegistrant, date};
 
-  let results = await mysql.query(generateInsertStatement('doctorappointments', data))
+  let results = await mysql.query(generateInsertStatement('doctorappointments', data));
   await mysql.end();
 
   return nonSelectQueryResponse(results);

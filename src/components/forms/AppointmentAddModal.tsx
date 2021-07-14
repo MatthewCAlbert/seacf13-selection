@@ -1,4 +1,10 @@
+import { useContext, useState } from 'react';
 import Modal from 'react-modal';
+import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle';
+import { fetch } from '../../utils/fetch';
+import Input from './Input';
+import { AuthContext } from '../../stores/authContext';
+import moment from 'moment';
 
 const customStyles = {
   content: {
@@ -8,11 +14,20 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    minWidth: '70%',
+    maxWidth: '750px'
   },
 };
 
-
-const AppointmentAddModal = ({modalIsOpen, setIsOpen=(x)=>{}}) => {
+const AppointmentAddModal = ({modalIsOpen, refresh, setIsOpen=(x)=>{}}) => {
+  const {user} = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    doctorName: "",
+    description: "",
+    maxRegistrant: 0,
+    date: new Date()
+  });
+  const [submitted, setSubmitted] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -20,13 +35,33 @@ const AppointmentAddModal = ({modalIsOpen, setIsOpen=(x)=>{}}) => {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
+    setFormData({
+      doctorName: "",
+      description: "",
+      maxRegistrant: 0,
+      date: new Date()
+    });
   }
 
   function closeModal() {
     setIsOpen(false);
   }
 
-  // Modal.setAppElement("#appointmentAddModal");
+  async function onSubmitAppointment(){
+    setSubmitted(true);
+    
+    try{
+      const res = await fetch(user.token).post("/appointment-create", {
+        ...formData, date: moment(formData.date).format("YYYY-MM-DD HH:mm:ss")
+      });
+      if( res && res.data && res.data.success ){
+        closeModal();
+      }
+    }catch(e){
+      setSubmitted(false);
+    }
+    refresh();
+  }
 
   return (
     <Modal
@@ -34,19 +69,26 @@ const AppointmentAddModal = ({modalIsOpen, setIsOpen=(x)=>{}}) => {
       onAfterOpen={afterOpenModal}
       onRequestClose={closeModal}
       style={customStyles}
-      contentLabel="Example Modal"
+      contentLabel="Add Appointment"
       ariaHideApp={false}
     >
-      <h2>Hello</h2>
-      <button onClick={closeModal}>close</button>
-      <div>I am a modal</div>
-      <form>
-        <input />
-        <button>tab navigation</button>
-        <button>stays</button>
-        <button>inside</button>
-        <button>the modal</button>
-      </form>
+      <button className="btn btn-red" onClick={closeModal}><i className="fas fa-times"></i></button>
+      <div>
+        <div className="form px-10 py-7 w-full">
+          <h1 className="font-bold text-2xl mb-4">Add Appointment Form</h1>
+          <Input form={formData} setForm={setFormData} title="Doctor Name" type="text" name="doctorName"/>
+          <Input form={formData} setForm={setFormData} title="Description" type="text" name="description"/>
+          <Input form={formData} setForm={setFormData} title="Max Registrant" type="number" name="maxRegistrant" min="0"/>
+          <Input form={formData} setForm={setFormData} title="Date Time" name="date">
+            <DateTimePicker
+              onChange={(e)=>setFormData({...formData, date:e})}
+              value={formData.date}
+            />
+          </Input>
+          <br />
+          <button className="btn btn-blue mt-5" onClick={onSubmitAppointment} disabled={submitted}>Submit</button>
+        </div>
+      </div>
     </Modal>
   )
 }

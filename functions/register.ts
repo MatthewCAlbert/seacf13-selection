@@ -24,7 +24,7 @@ const handler: Handler = async (event, context) => {
   let results = await mysql.query(generateInsertStatement('users',data));
   await mysql.end();
 
-  if( results && results.affectedRows > 0 ){
+  if( results ){
     const tokenObj = jwt.issueJWT(id);
     const userObj = { id, token: tokenObj, username, firstName, lastName, email, role, age }
     return {

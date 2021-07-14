@@ -12,10 +12,22 @@ const handler: Handler = async (event, context) => {
   const mysql = db;
 
   let res = await mysql.query(`SELECT * FROM doctorappointments`)
+
+  // Check full or not
+  let appointmentCount = await mysql.query(`SELECT appointmentId, userId FROM appointments`);
+
   await mysql.end();
 
   if( res ){
-    return selectResponse(res);
+    return { statusCode:200, body: JSON.stringify({
+        success: true,
+        message: "Ok!",
+        data:{
+          all: res,
+          list: appointmentCount
+        }
+      }) 
+    }
   }
 
   return errorResponse(500);
