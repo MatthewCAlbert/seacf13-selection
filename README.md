@@ -4,24 +4,24 @@
 
 ## About
 - By Matthew Christopher Albert
-- Built using JAMStack hosted on Netlify
+- Built using JAMStack architecture hosted on Netlify
 - Access Production Website 👉 [seacf13.matthewcalbert.com](https://seacf13.matthewcalbert.com)
 
 ## Note
 - Netlify Production Server kinda slow at processing lambda function.
 - Please install Netlify CLI to develop.
 - No Auto Refetch for getting data, please use refresh button/page.
-- Cannot change account info and password.
+- You cannot change account info and password once created.
 
 ## This project is kinda messy
 - React Context only used for auth
-- No Form Validation
+- Lacking Form Validation on both front and back-end
 - Not using SWR for data fetching
 
 ## Frontend Powered Using
 - [Next.js v10](https://nextjs.org/) (React) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 - SASS
-- TailwindCSS 2.0
+- TailwindCSS 2
 - Typescript
 - Font Awesome 5
 - React Table
