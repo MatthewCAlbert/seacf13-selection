@@ -6,15 +6,17 @@ import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle';
 import InputSide from '../../../components/forms/InputSide';
 import Layout from '../../../components/layouts/Layout';
 import SEO from '../../../components/layouts/SEO';
+import LoadingScreen from '../../../components/LoadingScreen';
 import DataTable from '../../../components/tables/DataTable';
 import { AuthContext } from '../../../stores/authContext';
 import { fetch } from '../../../utils/fetch';
 
 const Appointment = () => {
   const {user, isAdmin} = useContext(AuthContext);
+  if( !isAdmin() ) return <p>Unauthorized</p>;
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
   let {id} = router.query;
-  if( !isAdmin() ) return "Unauthorized";
   const [formData, setFormData] = useState({
     doctorName: "",
     description: "",
@@ -24,6 +26,7 @@ const Appointment = () => {
   const [dataList, setDataList] = useState([]);
   
   async function fetchData(){
+    setLoading(true);
     try{
       const res = await fetch(user.token).get(`/appointment-show`,{
         params: {
@@ -39,9 +42,11 @@ const Appointment = () => {
       }
     }catch(e){
     }
+    setLoading(false);
   }
 
   async function onUpdateHandler(){
+    setLoading(true);
     try{
       const res = await fetch(user.token).put("/appointment-update",{
         ...formData, id, date: moment(formData.date).format("YYYY-MM-DD HH:mm:ss")
@@ -52,7 +57,7 @@ const Appointment = () => {
       }
     }catch(e){
     }
-    fetchData();
+    await fetchData();
   }
 
   useEffect(() => {
@@ -86,6 +91,7 @@ const Appointment = () => {
     <>
       <SEO title="Appointment Detail"/>
       <Layout>
+        <LoadingScreen show={isLoading}/>
         <section className="section section-first">
           <div className="section-inner flex justify-center pt-10">
             <div className="flex-grow px-5 md:px-10">

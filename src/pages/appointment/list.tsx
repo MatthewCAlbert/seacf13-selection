@@ -9,15 +9,19 @@ import { fetch } from '../../utils/fetch';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import withReactContent from 'sweetalert2-react-content';
+import LoadingScreen from '../../components/LoadingScreen';
 
 const MySwal = withReactContent(Swal);
 
 const list = () => {
   const {user, isAdmin} = useContext(AuthContext);
+  if( !user ) return <p>Login First please</p>;
+  const [isLoading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [dataResult, setDataResult] = useState([]);
 
   async function refreshList(){
+    setLoading(true);
     try{
       const res = await fetch(user.token).get("/appointment-all");
       if( res && res.data && res.data.data && res.data.data.all && res.data.data.list ){
@@ -33,6 +37,7 @@ const list = () => {
       }
     }catch(e){
     }
+    setLoading(false);
   }
 
   async function applyModal(e){
@@ -44,6 +49,7 @@ const list = () => {
       showCancelButton: true
     }).then(async (result)=>{
       if( result.isConfirmed && id ){
+        setLoading(true);
         try{
           const res = await fetch(user.token).post("/appointment-apply", {
             id
@@ -55,6 +61,10 @@ const list = () => {
             });
           }
         }catch(e){
+            MySwal.fire({
+              title: <p>Booking Failed!</p>,
+              icon: "error"
+            });
         }
         refreshList();
       }
@@ -72,6 +82,7 @@ const list = () => {
       showCancelButton: true
     }).then(async (result)=>{
       if( result.isConfirmed && id ){
+        setLoading(true);
         try{
           const res = await fetch(user.token).delete("/appointment-destroy", {
             data: {
@@ -85,6 +96,10 @@ const list = () => {
             });
           }
         }catch(e){
+          MySwal.fire({
+            title: <p>Deletion Failed!</p>,
+            icon: "error"
+          });
         }
         refreshList();
       }
@@ -98,7 +113,7 @@ const list = () => {
   const data = useMemo(()=>dataResult.map((el)=>{
     return {...el,
     date: moment(el.date).format("LLLL"),
-    description: el.description.substr(0,20) + (el.description.length > 20 ? ".." : ""),
+    description: el.description.substr(0,50) + (el.description.length > 50 ? ".." : ""),
     action: <>
     {
       isAdmin() && 
@@ -140,15 +155,16 @@ const list = () => {
     <>
       <SEO title="Appointment List"/>
       <Layout>
+        <LoadingScreen show={isLoading}/>
         <section className="section section-first">
           <div className="section-inner flex justify-center pt-10">
             <div className="flex-grow px-5 md:px-10 max-w-full">
               <h1 className="font-bold text-3xl mb-4">Appointment List</h1>
               {
-                isAdmin() && <div className="my-5">
-                <button className="btn btn-blue" onClick={addModal}>Add Appointment</button>
-              </div>
-              }
+                isAdmin() &&
+                <button className="btn btn-blue mb-4" onClick={addModal}>Add Appointment</button>
+              } &nbsp;
+              <button className="btn btn-blue mb-4" onClick={refreshList}><i className="fas fa-sync"></i></button>
               <DataTable tableRow={data} tableCol={columns}/>
             </div>
           </div>
